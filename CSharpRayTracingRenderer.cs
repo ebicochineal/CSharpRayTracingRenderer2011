@@ -1345,7 +1345,6 @@ class Texture
         Vector2 t;
         Vector2 ta;
         Color texcolor = new Color();
-
         Vector2 wh = new Vector2((float)obj.texture[texnumber].Width - 1, (float)obj.texture[texnumber].Height - 1);
 
         Vector2 point = obj.uvtvertex[obj.uvtindex[indexnumber][0]];
@@ -1353,11 +1352,16 @@ class Texture
         Vector2 v02 = obj.uvtvertex[obj.uvtindex[indexnumber][2]] - point;
 
         t = point + ((v01 * ray.U) + (v02 * ray.V));
+        
+        t.x %= 1.0f;
+        t.y %= 1.0f;
+        t.x = (t.x + 1) % 1.0f;
+        t.y = (t.y + 1) % 1.0f;
+        t.y = 1.0f - t.y;
         ta.x = t.x * wh.x;
         ta.y = t.y * wh.y;
-        ta.y = wh.y - ta.y;
+        
         texcolor = obj.texture[texnumber].GetPixel((int)ta.x, (int)ta.y);
-
         return texcolor;
     }
 
